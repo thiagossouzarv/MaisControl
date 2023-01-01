@@ -8,6 +8,7 @@ export { default as RequisicaoPermissoesScreen } from "./login/subscreens/requis
 export { default as ClientesScreen } from "./clientes/ClientesScreen";
 export { default as AbastecimentosScreen } from "./abastecimentos/AbastecimentosScreen";
 export { default as TanquesScreen } from "./tanques/TanquesScreen";
+export { default as CadastroAbastecimentoScreen } from "./cadastroAbastecimentos/CadastroAbastecimentoScreen";
 
 export { default as MenuScreen } from "./menu/MenuScreen";
 export { default as AlterarSenhaScreen } from "./menu/subcreens/alterarSenha/AlterarSenhaScreen";

@@ -10,11 +10,14 @@ export const AUTH_SCREENS = {
 export const APP_SCREENS = {
     Tanques: "app.Tanques",
     Abastecimentos: "app.Abastecimentos",
+    CadastroAbastecimento: "app.CadastroAbastecimento",
     Clientes: "app.Clientes",
 
     Menu: "app.Menu",
     AlterarSenha: "app.AlterarSenha",
     Permissoes: "app.Permissoes",
+
+    
 };
 
 export function obterNomeDaRota(tela: string) {

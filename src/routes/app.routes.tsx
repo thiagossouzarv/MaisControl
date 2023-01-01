@@ -5,7 +5,7 @@ import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { APP_SCREENS } from "./screens";
 import screenOptions, { DrawerScreenOptions } from "./screenOptions";
 import AppMenu from "./appMenu/AppMenu";
-import { AbastecimentosScreen, AlterarSenhaScreen, ClientesScreen, MenuScreen, PermissoesScreen, TanquesScreen } from "../screens";
+import { AbastecimentosScreen, AlterarSenhaScreen, ClientesScreen, MenuScreen, PermissoesScreen, CadastroAbastecimentoScreen } from "../screens";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuth } from "../contexts/auth";
 
@@ -71,6 +71,14 @@ const AppRoutesMenu: React.FC = () => {
                 component={AbastecimentosScreen}
                 options={{
                     title: "Abastecimentos",
+                    drawerIcon: ({ color }) => <MaterialCommunityIcons name="gas-station-outline" size={22} color={color} />
+                }} />
+
+            <Drawer.Screen
+                name={APP_SCREENS.CadastroAbastecimento}
+                component={CadastroAbastecimentoScreen}
+                options={{
+                    title: "Cadastro Abastecimento",
                     drawerIcon: ({ color }) => <MaterialCommunityIcons name="gas-station-outline" size={22} color={color} />
                 }} />
 

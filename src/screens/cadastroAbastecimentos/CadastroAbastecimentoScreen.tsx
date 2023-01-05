@@ -10,14 +10,14 @@ import { TabView, TabBar } from 'react-native-tab-view'
 
 import * as UI from "./CadastroAbastecimentoScreenStyle"
 import TanquesScreen, { TanquesScreenHandler } from "../tanques/TanquesScreen"
-import { Dropdown, DropPeriod } from "../../components/form"
+import { Dropdown, DropPeriod, Input, InputHandler } from "../../components/form"
 import Moment from "../../utils/date"
-import EstoqueService, { Abastecimento } from "../../services/business/estoque"
 import ArrayUtils from "../../utils/array"
 import ReportUtils, { ReportGroup } from "../../utils/report"
 import { Icon } from "../../components/ui"
 import Item from "../clientes/components/item/Item"
-import CadastroService, { Funcionarios, Veiculos } from "../../services/business/cadastro"
+import CadastroService, { Bicos, CentroDeCusto, Funcionarios, TiposOperacao, Veiculos } from "../../services/business/cadastro"
+import { Masks } from "react-native-mask-input"
 
 
 interface CadastroAbastecimentoScreenProps extends PageBaseProps { }
@@ -73,13 +73,89 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     const _startDataInicial = useRef(Moment.addDays(new Date(), -6))
     const _startDataFinal = useRef(new Date())
 
+    const _inputVolume = useRef<InputHandler>(null)
+    const [volume, setVolume] = useState<string>('')
+
     const [dataInicial, setDataInicial] = useState<Date>(_startDataInicial.current)
     const [dataFinal, setDataFinal] = useState<Date>(_startDataFinal.current)
-    const [funcionarioSelecao, setfuncionarioSelecao] = useState<Funcionarios[]>([])
-    const [veiculosSelecao, setVeiculosSelecao] = useState<Veiculos[]>([])
+    
+    const [listaFuncionarios, setListafuncionarios] = useState<Funcionarios[]>([])
+    const [listaVeiculos, setListaVeiculos] = useState<Veiculos[]>([])
+
+    const [veiculoSelecao, setVeiculoSelecao] = useState<Veiculo>()
+    const [funcionarioSelecao, setFuncionarioSelecao] = useState<Funcionario>()
+
+    const [listaBicos, setListaBicos] = useState<Bicos[]>([])
+    const [bicoSelecao, setBicoSelecao] = useState<Bico>()
+
+    const [listaCentroCusto, setListaCentroCusto] = useState<CentroDeCusto[]>([])
+    const [centroCustoSelecao, setCentroCustoSelecao] = useState<CentroCusto>()
+
+    const [listaTipoOperacao, setListaTipoOperacao] = useState<TiposOperacao[]>([])
+    const [tipoOperacaoSelecao, setTipoOperacaoSelecao] = useState<TipoOperacao>()
+
 
     const [carregandoPagina, setCarregandoPagina] = useState(true)
     const [carregando, setCarregando] = useState(true)
+
+    const veiculos: Veiculo[] = useMemo(() => {
+        return ArrayUtils.removeDuplicates(listaVeiculos.map(o => ({
+            uid: o.GUID,
+            nome: o.PlacaDescricao
+        } as Veiculo)), "uid")
+    }, [listaVeiculos])
+
+    const funcionarios: Funcionario[] = useMemo(() => {
+        return ArrayUtils.removeDuplicates(listaFuncionarios.map(o => ({
+            uid: o.GUID,
+            nome: o.NomeFuncionario
+        } as Funcionario)), "uid")
+    }, [listaFuncionarios])
+
+    const bicos: Bico[] = useMemo(() => {
+        return ArrayUtils.removeDuplicates(listaBicos.map(o => ({
+            uid: o.GUID,
+            nome: o.Descricao
+        } as Bico)), "uid")
+    }, [listaBicos])
+
+    const centrosCusto: CentroCusto[] = useMemo(() => {
+        return ArrayUtils.removeDuplicates(listaCentroCusto.map(o => ({
+            uid: o.GUID,
+            nome: o.Descricao
+        } as CentroCusto)), "uid")
+    }, [listaCentroCusto])
+
+    const tiposOperacao: TipoOperacao[] = useMemo(() => {
+        return ArrayUtils.removeDuplicates(listaTipoOperacao.map(o => ({
+            uid: o.GUID,
+            nome: o.Descricao
+        } as TipoOperacao)), "uid")
+    }, [listaTipoOperacao])
+
+    const handleChangeVeiculo = useCallback((veiculo: Veiculo) => {
+        setVeiculoSelecao(veiculo)
+    }, [])
+
+    const handleChangeFuncionario = useCallback((funcionario: Funcionario) => {
+        setFuncionarioSelecao(funcionario)
+    }, [])
+
+    const handleChangeBico = useCallback((bico: Bico) => {
+        setBicoSelecao(bico)
+    }, [])
+
+    const handleChangeCentroCusto = useCallback((centroCusto: CentroCusto) => {
+        setCentroCustoSelecao(centroCusto)
+    }, [])
+
+    const handleChangeTipoOperacao = useCallback((tipoOperacao: TipoOperacao) => {
+        setTipoOperacaoSelecao(tipoOperacao)
+    }, [])
+
+    const handleChangeVolume = useCallback((volume: string) => {
+        setVolume(volume)
+    }, [])
 
     useEffect(function carregarPagina() {
         carregar()
@@ -89,9 +165,11 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
         try {
             setCarregando(true)
             const itens = await CadastroService.getCadastroBasicosAbastecimentos()
-            setfuncionarioSelecao(itens?.Funcionarios)
-            setVeiculosSelecao(itens?.Veiculos)
-            console.log(veiculosSelecao)
+            setListafuncionarios(itens?.Funcionarios)
+            setListaVeiculos(itens?.Veiculos)
+            setListaBicos(itens?.Bicos)
+            setListaCentroCusto(itens?.CentroDeCusto)
+            setListaTipoOperacao(itens?.TipoOperacao)
         } catch (error: any) {
             execSafe(() => _messager.current?.setError(error.userMessage || "Falha ao carregar a página."))
 
@@ -108,6 +186,147 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     return (
         <UI.Container>
             <UI.Main>
+                <Separator />
+                <Dropdown
+                    variant="fit"
+                    data={veiculos}
+                    map={{
+                        key: "uid",
+                        title: "nome",
+                        subtitle: "nome",
+                        icon: "map-marker-radius-outline",
+                        iconSource: "material-community",
+                        iconColor: "fg:main"
+                    }}
+                    label="Veículo/Equipamento"
+                    labelMinWidth={125}
+                    placeholder="selecione"
+                    modalTitle="Veículos/Equipamentos"
+                    onChange={handleChangeVeiculo}
+                    initialSelection={0}
+                    error=""
+                />
+                <Divider gap="xs" margin="sm" />
+                <Dropdown
+                    variant="fit"
+                    data={funcionarios}
+                    map={{
+                        key: "uid",
+                        title: "nome",
+                        subtitle: "nome",
+                        icon: "map-marker-radius-outline",
+                        iconSource: "material-community",
+                        iconColor: "fg:main"
+                    }}
+                    label="Funcionario"
+                    labelMinWidth={125}
+                    placeholder="selecione"
+                    modalTitle="Funcionarios"
+                    onChange={handleChangeFuncionario}
+                    initialSelection={0}
+                    error=""
+                />
+                <Divider gap="xs" margin="sm" />
+                <Dropdown
+                    variant="fit"
+                    data={bicos}
+                    map={{
+                        key: "uid",
+                        title: "nome",
+                        subtitle: "nome",
+                        icon: "map-marker-radius-outline",
+                        iconSource: "material-community",
+                        iconColor: "fg:main"
+                    }}
+                    label="Bico"
+                    labelMinWidth={125}
+                    placeholder="selecione"
+                    modalTitle="Bicos"
+                    onChange={handleChangeBico}
+                    initialSelection={0}
+                    error=""
+                />
+                <Divider gap="xs" margin="sm" />
+                <Dropdown
+                    variant="fit"
+                    data={centrosCusto}
+                    map={{
+                        key: "uid",
+                        title: "nome",
+                        subtitle: "nome",
+                        icon: "map-marker-radius-outline",
+                        iconSource: "material-community",
+                        iconColor: "fg:main"
+                    }}
+                    label="Centro de custo"
+                    labelMinWidth={125}
+                    placeholder="selecione"
+                    modalTitle="Centros de custo"
+                    onChange={handleChangeCentroCusto}
+                    initialSelection={0}
+                    error=""
+                />
+
+                <Divider gap="xs" margin="sm" />
+                <Dropdown
+                    variant="fit"
+                    data={tiposOperacao}
+                    map={{
+                        key: "uid",
+                        title: "nome",
+                        subtitle: "nome",
+                        icon: "map-marker-radius-outline",
+                        iconSource: "material-community",
+                        iconColor: "fg:main"
+                    }}
+                    label="Tipo de operação"
+                    labelMinWidth={125}
+                    placeholder="selecione"
+                    modalTitle="Tipos de operação"
+                    onChange={handleChangeTipoOperacao}
+                    initialSelection={0}
+                    error=""
+                />
+                <Divider gap="xs" margin="sm" />
+
+                <Input
+                            ref={_inputVolume}
+                            placeholder="Volume Litros"
+                            onChange={handleChangeVolume}
+                            disabled={carregando}
+                            keyboard="number-pad"
+                            submitButton="next"
+                        />
+
+                <Input
+                            ref={_inputVolume}
+                            placeholder="Odômetro"
+                            onChange={handleChangeVolume}
+                            disabled={carregando}
+                            keyboard="number-pad"
+                            submitButton="next"
+                        />
+
+                <Input
+                            ref={_inputVolume}
+                            placeholder="Horimetro"
+                            onChange={handleChangeVolume}
+                            disabled={carregando}
+                            keyboard="number-pad"
+                            submitButton="next"
+                        />
+
+                    <Input
+                            ref={_inputVolume}
+                            placeholder="Placa terceiros"
+                            onChange={handleChangeVolume}
+                            disabled={carregando}
+                            keyboard="number-pad"
+                            submitButton="next"
+                        />
+
+                
+
                 <Messager ref={_messager} />
                 <PageLoading
                     visible={carregandoPagina || carregando}
@@ -131,12 +350,27 @@ const renderTabBar = (props: any) => {
 
 export default CadastroAbastecimentoScreen
 
-interface Empresa {
+interface Veiculo {
     uid: string
     nome: string
 }
 
-interface Produto {
+interface Funcionario {
+    uid: string
+    nome: string
+}
+
+interface Bico {
+    uid: string
+    nome: string
+}
+
+interface CentroCusto {
+    uid: string
+    nome: string
+}
+
+interface TipoOperacao {
     uid: string
     nome: string
 }

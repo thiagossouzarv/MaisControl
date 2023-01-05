@@ -4,7 +4,7 @@ import api from "../core/api"
 import Http, { HttpBaseResponse } from "../core/http"
 
 export default class CadastroService {
-    static getCadastroBasicosAbastecimentos(): Promise<Dados[]> {
+    static getCadastroBasicosAbastecimentos(): Promise<Dados> {
         return new Promise(async (resolve, reject) => {
             try {
                 const resp: GetCadastroBasicosAbastecimentosResponse = await api.get("CadastrosBasicos/GetCadastroBasicosAbastecimentos")
@@ -28,7 +28,8 @@ interface GetCadastroBasicosAbastecimentosResponse extends HttpBaseResponse {
         CentroDeCusto: CentroDeCusto[],
         Bicos:Bicos[],
         Funcionarios: Funcionarios[],
-        Veiculos: Veiculos[]
+        Veiculos: Veiculos[],
+        TipoOperacao: TiposOperacao[],
     }
 }
 
@@ -37,6 +38,7 @@ export interface Dados {
     Bicos:Bicos[]
     Funcionarios: Funcionarios[]
     Veiculos: Veiculos[]
+    TipoOperacao: TiposOperacao[]
 }
 
 export interface Bicos {
@@ -53,6 +55,11 @@ export interface Bicos {
     ListEmpresasFilha: []
     MacConcentradorEmpresaOrigem: string
     ValorVenda: number
+}
+
+export interface TiposOperacao {
+    GUID: string
+    Descricao: string
 }
 
 export interface Veiculos {

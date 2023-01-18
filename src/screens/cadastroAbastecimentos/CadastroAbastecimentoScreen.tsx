@@ -10,7 +10,7 @@ import { TabView, TabBar } from 'react-native-tab-view'
 
 import * as UI from "./CadastroAbastecimentoScreenStyle"
 import TanquesScreen, { TanquesScreenHandler } from "../tanques/TanquesScreen"
-import { Dropdown, DropPeriod, Input, InputHandler } from "../../components/form"
+import { Dropdown, DropPeriod, FixedButton, Input, InputHandler, StepIndicator } from "../../components/form"
 import Moment from "../../utils/date"
 import ArrayUtils from "../../utils/array"
 import ReportUtils, { ReportGroup } from "../../utils/report"
@@ -97,6 +97,8 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
 
     const [carregandoPagina, setCarregandoPagina] = useState(true)
     const [carregando, setCarregando] = useState(true)
+    const [stepPosition, setStepPosition] = useState(2)
+    const [labelsStep, setLabelsStep] = useState(['Indentificação', 'Funcionario/Veiculo', 'Abastecimento'])
 
     const veiculos: Veiculo[] = useMemo(() => {
         return ArrayUtils.removeDuplicates(listaVeiculos.map(o => ({
@@ -181,124 +183,117 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
         }
     }
 
+    const next = () => {
+        setStepPosition(stepPosition+1>=labelsStep.length? 0 : stepPosition+1)
+    }
+
+    const back = () => {
+        setStepPosition(stepPosition-1)
+    }
 
 
     return (
         <UI.Container>
             <UI.Main>
-                <Separator />
-                <Dropdown
-                    variant="fit"
-                    data={veiculos}
-                    map={{
-                        key: "uid",
-                        title: "nome",
-                        subtitle: "nome",
-                        icon: "map-marker-radius-outline",
-                        iconSource: "material-community",
-                        iconColor: "fg:main"
-                    }}
-                    label="Veículo/Equipamento"
-                    labelMinWidth={125}
-                    placeholder="selecione"
-                    modalTitle="Veículos/Equipamentos"
-                    onChange={handleChangeVeiculo}
-                    initialSelection={0}
-                    error=""
-                />
-                <Divider gap="xs" margin="sm" />
-                <Dropdown
-                    variant="fit"
-                    data={funcionarios}
-                    map={{
-                        key: "uid",
-                        title: "nome",
-                        subtitle: "nome",
-                        icon: "map-marker-radius-outline",
-                        iconSource: "material-community",
-                        iconColor: "fg:main"
-                    }}
-                    label="Funcionario"
-                    labelMinWidth={125}
-                    placeholder="selecione"
-                    modalTitle="Funcionarios"
-                    onChange={handleChangeFuncionario}
-                    initialSelection={0}
-                    error=""
-                />
-                <Divider gap="xs" margin="sm" />
-                <Dropdown
-                    variant="fit"
-                    data={bicos}
-                    map={{
-                        key: "uid",
-                        title: "nome",
-                        subtitle: "nome",
-                        icon: "map-marker-radius-outline",
-                        iconSource: "material-community",
-                        iconColor: "fg:main"
-                    }}
-                    label="Bico"
-                    labelMinWidth={125}
-                    placeholder="selecione"
-                    modalTitle="Bicos"
-                    onChange={handleChangeBico}
-                    initialSelection={0}
-                    error=""
-                />
-                <Divider gap="xs" margin="sm" />
-                <Dropdown
-                    variant="fit"
-                    data={centrosCusto}
-                    map={{
-                        key: "uid",
-                        title: "nome",
-                        subtitle: "nome",
-                        icon: "map-marker-radius-outline",
-                        iconSource: "material-community",
-                        iconColor: "fg:main"
-                    }}
-                    label="Centro de custo"
-                    labelMinWidth={125}
-                    placeholder="selecione"
-                    modalTitle="Centros de custo"
-                    onChange={handleChangeCentroCusto}
-                    initialSelection={0}
-                    error=""
-                />
-
-                <Divider gap="xs" margin="sm" />
-                <Dropdown
-                    variant="fit"
-                    data={tiposOperacao}
-                    map={{
-                        key: "uid",
-                        title: "nome",
-                        subtitle: "nome",
-                        icon: "map-marker-radius-outline",
-                        iconSource: "material-community",
-                        iconColor: "fg:main"
-                    }}
-                    label="Tipo de operação"
-                    labelMinWidth={125}
-                    placeholder="selecione"
-                    modalTitle="Tipos de operação"
-                    onChange={handleChangeTipoOperacao}
-                    initialSelection={0}
-                    error=""
-                />
-                <Divider gap="xs" margin="sm" />
-
-                <Input
-                            ref={_inputVolume}
-                            placeholder="Volume Litros"
-                            onChange={handleChangeVolume}
-                            disabled={carregando}
-                            keyboard="number-pad"
-                            submitButton="next"
+                <StepIndicator currentPosition={stepPosition} 
+                               key={1} 
+                               labels={labelsStep}
+                               stepCount={labelsStep.length}/>
+                
+                
+                
+                
+                { stepPosition == 0 ?
+                    <UI.Main>
+                        <Separator />
+                        <Dropdown
+                            variant="fit"
+                            data={funcionarios}
+                            map={{
+                                key: "uid",
+                                title: "nome",
+                                subtitle: "nome",
+                                icon: "map-marker-radius-outline",
+                                iconSource: "material-community",
+                                iconColor: "fg:main"
+                            }}
+                            label="Funcionario"
+                            labelMinWidth={125}
+                            placeholder="selecione"
+                            modalTitle="Funcionarios"
+                            onChange={handleChangeFuncionario}
+                            initialSelection={0}
+                            error=""
+                        />
+                        <Divider gap="xs" margin="sm" />
+                        <Dropdown
+                            variant="fit"
+                            data={centrosCusto}
+                            map={{
+                                key: "uid",
+                                title: "nome",
+                                subtitle: "nome",
+                                icon: "map-marker-radius-outline",
+                                iconSource: "material-community",
+                                iconColor: "fg:main"
+                            }}
+                            label="Centro de custo"
+                            labelMinWidth={125}
+                            placeholder="selecione"
+                            modalTitle="Centros de custo"
+                            onChange={handleChangeCentroCusto}
+                            initialSelection={0}
+                            error=""
                         />
 
-                <Input
+                        <Divider gap="xs" margin="sm" />
+                        <Dropdown
+                            variant="fit"
+                            data={tiposOperacao}
+                            map={{
+                                key: "uid",
+                                title: "nome",
+                                subtitle: "nome",
+                                icon: "map-marker-radius-outline",
+                                iconSource: "material-community",
+                                iconColor: "fg:main"
+                            }}
+                            label="Tipo de operação"
+                            labelMinWidth={125}
+                            placeholder="selecione"
+                            modalTitle="Tipos de operação"
+                            onChange={handleChangeTipoOperacao}
+                            initialSelection={0}
+                            error=""
+                        />
+
+                    </UI.Main>
+                : null }
+
+                { stepPosition == 1 ?
+                    <UI.Main>
+                        <Separator />
+                        <Dropdown
+                            variant="fit"
+                            data={veiculos}
+                            map={{
+                                key: "uid",
+                                title: "nome",
+                                subtitle: "nome",
+                                icon: "map-marker-radius-outline",
+                                iconSource: "material-community",
+                                iconColor: "fg:main"
+                            }}
+                            label="Veículo/Equipamento"
+                            labelMinWidth={125}
+                            placeholder="selecione"
+                            modalTitle="Veículos/Equipamentos"
+                            onChange={handleChangeVeiculo}
+                            initialSelection={0}
+                            error=""
+                        />
+                        <Divider gap="xs" margin="sm" />
+                        <Input
                             ref={_inputVolume}
                             placeholder="Odômetro"
                             onChange={handleChangeVolume}
@@ -307,7 +302,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             submitButton="next"
                         />
 
-                <Input
+                        <Input
                             ref={_inputVolume}
                             placeholder="Horimetro"
                             onChange={handleChangeVolume}
@@ -315,8 +310,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             keyboard="number-pad"
                             submitButton="next"
                         />
-
-                    <Input
+                        <Input
                             ref={_inputVolume}
                             placeholder="Placa terceiros"
                             onChange={handleChangeVolume}
@@ -324,10 +318,59 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             keyboard="number-pad"
                             submitButton="next"
                         />
+                    </UI.Main>
+                : null }
 
+                { stepPosition == 2 ?
+                <UI.Main>
+
+                    <Divider gap="xs" margin="sm" />
+                    <Dropdown
+                        variant="fit"
+                        data={bicos}
+                        map={{
+                            key: "uid",
+                            title: "nome",
+                            subtitle: "nome",
+                            icon: "map-marker-radius-outline",
+                            iconSource: "material-community",
+                            iconColor: "fg:main"
+                        }}
+                        label="Bico"
+                        labelMinWidth={125}
+                        placeholder="selecione"
+                        modalTitle="Bicos"
+                        onChange={handleChangeBico}
+                        initialSelection={0}
+                        error=""
+                    />
+
+                    <Input
+                                ref={_inputVolume}
+                                placeholder="Volume Litros"
+                                onChange={handleChangeVolume}
+                                disabled={carregando}
+                                keyboard="number-pad"
+                                submitButton="next"
+                            />
+
+                    
+
+                    
+
+                </UI.Main>
+                : null }
                 
-
                 <Messager ref={_messager} />
+                
+                <FixedButton
+                    type="back"
+                    onPress={back}
+                    visible={stepPosition>0} />
+                <FixedButton
+                    type="next"
+                    onPress={next}
+                    visible={stepPosition+1<labelsStep.length} />
                 <PageLoading
                     visible={carregandoPagina || carregando}
                     white={carregando} />

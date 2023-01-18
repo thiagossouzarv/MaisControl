@@ -15,34 +15,51 @@ const ICONS = {
     add: {
         icon: "plus",
         source: "material-community" as IconType
+    },
+    back: {
+        icon: "chevron-left",
+        source: "entypo" as IconType
     }
 }
 
 interface FixedButtonProps {
    onPress: () => void
-   type?: "next" | "confirm" | "add"
+   type?: "next" | "confirm" | "add" | "back"
    visible?: boolean
+   left?: boolean
 }
 
 const FixedButton: React.FC<FixedButtonProps> = ({
     onPress,
     type = "next",
-    visible = true
+    visible = true,
+    left=false
 }) => {
     const _icon = ICONS[type]
 
     if (!visible) return null
-
-    return (
-        <UI.Container>
-            <Icon
-                onClick={onPress}
-                icon={_icon.icon}
-                iconSource={_icon.source}
-                inverted
-                button />
-        </UI.Container>
-    )
+    if( type == "back")
+        return (
+            <UI.ContainerLeft>
+                <Icon
+                    onClick={onPress}
+                    icon={_icon.icon}
+                    iconSource={_icon.source}
+                    inverted
+                    button />
+            </UI.ContainerLeft>
+        )
+    else
+        return (
+            <UI.Container>
+                <Icon
+                    onClick={onPress}
+                    icon={_icon.icon}
+                    iconSource={_icon.source}
+                    inverted
+                    button />
+            </UI.Container>
+        )
 }
 
 export default FixedButton

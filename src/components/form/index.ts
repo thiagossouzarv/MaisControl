@@ -13,3 +13,4 @@ export { default as FixedButton } from "./fixedButton/FixedButton";
 export { default as DateTimePicker } from "./dateTimePicker/DateTimePicker";
 export { default as ModalDateTimePicker } from "./dateTimePicker/derivation/modalDateTimePicker/ModalDateTimePicker";
 export { default as DropPeriod } from "./dateTimePicker/derivation/dropPeriod/DropPeriod";
+export { default as StepIndicator } from "./stepIndicator/StepIndicator";

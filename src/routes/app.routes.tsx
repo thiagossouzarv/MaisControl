@@ -78,7 +78,7 @@ const AppRoutesMenu: React.FC = () => {
                 name={APP_SCREENS.CadastroAbastecimento}
                 component={CadastroAbastecimentoScreen}
                 options={{
-                    title: "Cadastro Abastecimento",
+                    title: "Cadastrar Abastecimento",
                     drawerIcon: ({ color }) => <MaterialCommunityIcons name="gas-station-outline" size={22} color={color} />
                 }} />
 

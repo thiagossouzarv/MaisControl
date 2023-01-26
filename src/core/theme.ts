@@ -134,6 +134,7 @@ const Metrics = {
         xs: 3,
         sm: 5,
         md: 10,
+        mdl:15,
         lg: 20,
         xl: 30
     },

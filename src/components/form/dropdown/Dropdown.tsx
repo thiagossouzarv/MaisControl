@@ -57,6 +57,10 @@ const Dropdown: React.FC<DropdownProps> = ({
         <>
             <UI.Container onPress={() => setModalSelecaoAberto(true)}>
                 {!!label && !isFit && <UI.Label error={error}>{label}</UI.Label>}
+
+                <UI.InputContainer
+                disabled={false}
+                error={!!error}>
                 <UI.Content variant={variant}>
                     <UI.TextContainer variant={variant}>
                         {!!label && isFit && <>
@@ -76,6 +80,8 @@ const Dropdown: React.FC<DropdownProps> = ({
                         iconSize={isFit ? "xs" : "sm"}
                         variant={variant} />
                 </UI.Content>
+
+                </UI.InputContainer>
 
                 {!isFit && <UI.Divider error={error} />}
 

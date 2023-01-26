@@ -35,7 +35,8 @@ export interface InputProps {
     clearable?: boolean,
     disabled?: boolean,
     password?: boolean,
-    multiline?: boolean
+    multiline?: boolean,
+    hasErroText?: boolean
 }
 
 const Input = React.forwardRef<InputHandler, InputProps>(({
@@ -56,6 +57,7 @@ const Input = React.forwardRef<InputHandler, InputProps>(({
     iconButton = false,
     disabled = false,
     password = false,
+    hasErroText = true,
     ...inputProps
 }, ref) => {
     const _input = useRef<InputHandler>(null)
@@ -155,8 +157,10 @@ const Input = React.forwardRef<InputHandler, InputProps>(({
                     }
                 </UI.Main>
             </UI.InputContainer>
-
-            <InputError error={error} />
+            { hasErroText? 
+                <InputError error={error} />
+            : null
+            }
         </UI.Container>
     )
 })

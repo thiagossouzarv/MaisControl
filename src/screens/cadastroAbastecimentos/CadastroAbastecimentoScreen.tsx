@@ -10,7 +10,7 @@ import { TabView, TabBar } from 'react-native-tab-view'
 
 import * as UI from "./CadastroAbastecimentoScreenStyle"
 import TanquesScreen, { TanquesScreenHandler } from "../tanques/TanquesScreen"
-import { Dropdown, DropPeriod, FixedButton, Input, InputHandler, StepIndicator } from "../../components/form"
+import { Button, Dropdown, DropPeriod, FixedButton, Input, InputHandler, StepIndicator } from "../../components/form"
 import Moment from "../../utils/date"
 import ArrayUtils from "../../utils/array"
 import ReportUtils, { ReportGroup } from "../../utils/report"
@@ -70,14 +70,13 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     const { execSafe } = useTrackingMounting()
 
     const _messager = useRef<MessagerHandler>()
-    const _startDataInicial = useRef(Moment.addDays(new Date(), -6))
-    const _startDataFinal = useRef(new Date())
 
-    const _inputVolume = useRef<InputHandler>(null)
     const [volume, setVolume] = useState<string>('')
+    const [odometro, setOdometro] = useState<string>('')
+    const [horimetro, setHorimetro] = useState<string>('')
+    const [placaTerceiro, setPlacaTerceiro] = useState<string>('')
 
-    const [dataInicial, setDataInicial] = useState<Date>(_startDataInicial.current)
-    const [dataFinal, setDataFinal] = useState<Date>(_startDataFinal.current)
+    const [observacao, setObservacao] = useState<string>('')
     
     const [listaFuncionarios, setListafuncionarios] = useState<Funcionarios[]>([])
     const [listaVeiculos, setListaVeiculos] = useState<Veiculos[]>([])
@@ -159,6 +158,24 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
         setVolume(volume)
     }, [])
 
+    const handleChangeOdometro = useCallback((odometro: string) => {
+        setOdometro(odometro)
+    }, [])
+
+    const handleChangeHorimetro = useCallback((horimetro: string) => {
+        setHorimetro(horimetro)
+    }, [])
+
+    const handleChangePlacaTerceiro = useCallback((placaTerceiro: string) => {
+        setPlacaTerceiro(placaTerceiro)
+    }, [])
+
+    const handleChangeObservacao = useCallback((observacao: string) => {
+        setObservacao(observacao)
+    }, [])
+
+    
+
     useEffect(function carregarPagina() {
         carregar()
     }, [])
@@ -184,13 +201,91 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     }
 
     const next = () => {
-        setStepPosition(stepPosition+1>=labelsStep.length? 0 : stepPosition+1)
+        
+        if (validarDados(stepPosition))
+            setStepPosition(stepPosition+1>=labelsStep.length? 0 : stepPosition+1)
+    }
+
+    const validarDados = (stepPosition:number|undefined) => {
+        if ( stepPosition == 0 || stepPosition == undefined ){
+            if (funcionarioSelecao == undefined){
+                _messager.current?.setError("Selecionar o funcionário!")
+                return false
+            }       
+        }
+
+        if (stepPosition == 1 || stepPosition == undefined ){
+            if (veiculoSelecao == undefined){
+                _messager.current?.setError("Selecionar o Veículo!")
+                return false
+            }  
+
+            if (odometro == ''){
+                _messager.current?.setError("Informe o odometro do veículo!")
+                return false
+            }
+        }
+
+        if (stepPosition == 2 || stepPosition == undefined ){
+            if (bicoSelecao == undefined){
+                _messager.current?.setError("Selecionar o Bico!")
+                return false
+            }  
+
+            if (volume == ''){
+                _messager.current?.setError("Informe o volume em litros!")
+                return false
+            }
+        }
+        return true
     }
 
     const back = () => {
         setStepPosition(stepPosition-1)
     }
 
+    const handleCadastrar = () => {
+        if ( validarDados(undefined) ){
+            return new Promise(async (resolve, reject) => {
+                try {
+                    setCarregando(true)
+                    const response = await CadastroService.CadastrarAbastecimento(
+                        bicoSelecao?.uid,
+                        veiculoSelecao?.uid,
+                        funcionarioSelecao?.uid,
+                        volume,
+                        odometro,
+                        horimetro,
+                        new Date().toDateString(),
+                        centroCustoSelecao?.uid,
+                        tipoOperacaoSelecao?.uid,
+                        placaTerceiro,
+                        observacao
+                    )
+                    setCarregando(false)
+                    _messager.current?.setSuccess("Abastecimento foi criado com sucesso.", undefined, undefined, "full_page")
+                    setStepPosition(0)
+                    clearScreen()
+                } catch (error: any) {
+                    setCarregando(false)
+                    reject(error)
+                }
+            })
+        }
+    }
+
+    const clearScreen = () => {
+        setFuncionarioSelecao(undefined)
+        setCentroCustoSelecao(undefined)
+        setTipoOperacaoSelecao(undefined)
+        setVeiculoSelecao(undefined)
+        setOdometro('')
+        setHorimetro('')
+        setPlacaTerceiro('')
+        setBicoSelecao(undefined)
+        setVolume('')
+        setObservacao('')
+    }
 
     return (
         <UI.Container>
@@ -225,7 +320,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             initialSelection={0}
                             error=""
                         />
-                        <Divider gap="xs" margin="sm" />
+                        <Separator />
                         <Dropdown
                             variant="fit"
                             data={centrosCusto}
@@ -246,7 +341,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             error=""
                         />
 
-                        <Divider gap="xs" margin="sm" />
+                        <Separator />
                         <Dropdown
                             variant="fit"
                             data={tiposOperacao}
@@ -292,30 +387,36 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             initialSelection={0}
                             error=""
                         />
-                        <Divider gap="xs" margin="sm" />
+                        <Separator />
                         <Input
-                            ref={_inputVolume}
+                            initialValue={odometro}
                             placeholder="Odômetro"
-                            onChange={handleChangeVolume}
+                            onChange={handleChangeOdometro}
                             disabled={carregando}
+                            hasErroText={false}
+                            style={{marginLeft:20, marginRight:20}}
                             keyboard="number-pad"
                             submitButton="next"
                         />
-
+                        <Separator />
                         <Input
-                            ref={_inputVolume}
+                            initialValue={horimetro}
                             placeholder="Horimetro"
-                            onChange={handleChangeVolume}
+                            onChange={handleChangeHorimetro}
                             disabled={carregando}
+                            hasErroText={false}
+                            style={{marginLeft:20, marginRight:20}}
                             keyboard="number-pad"
                             submitButton="next"
                         />
+                        <Separator />
                         <Input
-                            ref={_inputVolume}
+                            initialValue={placaTerceiro}
                             placeholder="Placa terceiros"
-                            onChange={handleChangeVolume}
+                            onChange={handleChangePlacaTerceiro}
                             disabled={carregando}
-                            keyboard="number-pad"
+                            hasErroText={false}
+                            style={{marginLeft:20, marginRight:20}}
                             submitButton="next"
                         />
                     </UI.Main>
@@ -323,8 +424,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
 
                 { stepPosition == 2 ?
                 <UI.Main>
-
-                    <Divider gap="xs" margin="sm" />
+                    <Separator />
                     <Dropdown
                         variant="fit"
                         data={bicos}
@@ -344,17 +444,41 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                         initialSelection={0}
                         error=""
                     />
-
-                    <Input
-                                ref={_inputVolume}
-                                placeholder="Volume Litros"
-                                onChange={handleChangeVolume}
-                                disabled={carregando}
-                                keyboard="number-pad"
-                                submitButton="next"
+                    <Separator />
+                    <Input    
+                            initialValue={volume}  
+                            placeholder="Volume Litros"
+                            onChange={handleChangeVolume}
+                            disabled={carregando}
+                            hasErroText={false}
+                            style={{marginLeft:20, marginRight:20}}
+                            keyboard="number-pad"
+                            submitButton="next"
                             />
-
+                    <Separator />
+                    <Input  
+                            initialValue={observacao}
+                            placeholder="Observacao"
+                            onChange={handleChangeObservacao}
+                            disabled={carregando}
+                            hasErroText={false}
+                            style={{marginLeft:20, marginRight:20}}
+                            submitButton="next"
+                            />
+                    <Separator />
                     
+                    <UI.ActionContainer>
+                            <Button
+                                type="submit"
+                                icon="save"
+                                iconFont="ant-design"
+                                rounding
+                                style={{marginLeft:20, marginRight:20}}
+                                loading={carregando}
+                                onClick={handleCadastrar}>
+                                Cadastrar
+                            </Button>
+                    </UI.ActionContainer>
 
                     
 

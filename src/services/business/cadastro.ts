@@ -20,8 +20,59 @@ export default class CadastroService {
             }
         })
     }
+
+    static CadastrarAbastecimento(
+        IdBicoGuid: string,
+        IdTagVeiculoGuid: string,
+        IdTagFuncionarioGuid: string,
+        VolumeTotal: number,
+        Odometro: number,
+        Horimetro: number,
+        Data: string,
+        IdCentroCustoGuid: string,
+        IdTipoOperacaoGuid: string,
+        DescricaoTerceiro: string,
+        Observacao: string
+    ): Promise<CadastroResponse> {
+        return new Promise(async (resolve, reject) => {
+            try {
+
+                const resp: CadastroResponse = await api.post("abastecimento/GravarAbastecimentoInterno", {
+                    IdBicoGuid: IdBicoGuid,
+                    IdTagVeiculoGuid: IdTagVeiculoGuid,
+                    IdTagFuncionarioGuid: IdTagFuncionarioGuid,
+                    VolumeTotal: VolumeTotal,
+                    Odometro: Odometro,
+                    Horimetro: Horimetro,
+                    Data: Data,
+                    IdCentroCustoGuid: IdCentroCustoGuid,
+                    IdTipoOperacaoGuid: IdTipoOperacaoGuid,
+                    DescricaoTerceiro: DescricaoTerceiro,
+                    Observacao: Observacao
+                })
+
+                const validate = Http.validate(resp)
+
+                if (validate.hasError)
+                    return reject(validate.rejection)
+
+                resolve(resp)
+
+            } catch (error: any) {
+                reject(Http.processError(error))
+            }
+        })
+    }
 }
 
+interface CadastroResponse {
+    Codigo: number,
+    Mensagem: string,
+    Data: {
+        GUID: string,
+        DataSincronizadoWeb: string
+    }
+}
 
 interface GetCadastroBasicosAbastecimentosResponse extends HttpBaseResponse {
     Data: {

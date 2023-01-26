@@ -11,7 +11,8 @@ export const Content = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: ${({ theme, variant }: ThemeObject) => variant === "fit" ? "flex-start" : "space-between"};
-    padding: ${({ theme }: ThemeObject) => `${theme.metrics.spacing.sm}px 0px`};
+    padding: ${({ theme }: ThemeObject) => `${theme.metrics.spacing.mdl}px 0px`};
+    
 `
 
 export const TextContainer = styled.View`  
@@ -55,3 +56,22 @@ export const Icon = styled(AppIcon).attrs(({ theme, error, variant }: ThemeObjec
     font-size: ${({ theme }: ThemeObject) => theme.input.icon.size}px;
     opacity: 0.8;
 `
+
+
+export const InputContainer = styled.View`
+  background-color: ${({ error, disabled, theme }: ThemeObject) => 
+    error ? theme.input.bg.error
+    : (disabled 
+        ? theme.input.bg.disabled 
+        : theme.input.bg.default)};
+  border: ${({ error, disabled, theme }: ThemeObject) => 
+    `${theme.input.border.size}px solid ${ 
+        disabled ? theme.input.border.bg.disabled 
+        : error ? theme.input.border.bg.error 
+            : theme.input.border.bg.default}`};
+  border-radius: ${({ theme }: ThemeObject) => theme.input.border.rouding}px;
+  padding: ${({ theme }: ThemeObject) => 
+    `${theme.input.padding.vertical}px ${theme.input.padding.horizontal}px`};
+  padding-left: ${({ iconButton, theme }: ThemeObject) => 
+    iconButton ? theme.input.padding.horizontal : 13}px;
+`;

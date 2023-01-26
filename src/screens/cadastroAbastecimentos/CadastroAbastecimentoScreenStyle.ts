@@ -18,3 +18,7 @@ export const Subtitle = styled(Subtitle1)``
 export const NavIcons = styled.View`
     flex-direction: row;
 `
+
+export const ActionContainer = styled.View`
+    margin-top: 6px;
+`

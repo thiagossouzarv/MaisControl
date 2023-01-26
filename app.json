@@ -1,74 +1,83 @@
 {
-    "expo": {
-        "name": "MaisControl",
-        "slug": "MaisControl",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "icon": "./src/assets/images/icon.png",
-        "scheme": "lutagro",
-        "userInterfaceStyle": "automatic",
-        "platforms": [
-            "ios",
-            "android"
-        ],
-        "splash": {
-            "image": "./src/assets/images/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#dadada"
-        },
-        "notification": {
-            "icon": "./src/assets/images/icone_notificacao.png",
-            "color": "#1DA1F2"
-        },
-        "updates": {
-            "fallbackToCacheTimeout": 0
-        },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
-        "ios": {
-            "supportsTablet": false,
-            "infoPlist": {
-                "NSLocationUsageDescription": "Utilizamos sua localização para realizar o checkin!",
-                "NSLocationAlwaysUsageDescription": "Utilizamos sua localização para realizar o checkin!",
-                "NSLocationWhenInUseUsageDescription": "Utilizamos sua localização para realizar o checkin!",
-                "NSLocationAlwaysAndWhenInUseUsageDescription": "Utilizamos sua localização para realizar o checkin!",
-                "NSPhotoLibraryUsageDescription": "Permita o acesso à sua biblioteca de fotos para escolher sua foto de perfil",
-                "NSCameraUsageDescription": "Permita o acesso à sua câmera para você poder tirar sua foto de perfil",
-                "NSFaceIDUsageDescription": "O Face ID será usado para autenticação no aplicativo"
-            },
-            "bundleIdentifier": "com.br.lutcode.maiscontrol"
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./src/assets/images/adaptive-icon.png",
-                "backgroundColor": "#FFFFFF"
-            },
-            "permissions": [
-                "ACCESS_FINE_LOCATION",
-                "ACCESS_COARSE_LOCATION",
-                "CAMERA",
-                "READ_EXTERNAL_STORAGE",
-                "WRITE_EXTERNAL_STORAGE"
-            ],
-            "playStoreUrl": "https://play.google.com/store/apps/details?id=com.br.lutcode.lutagro",
-            "package": "com.br.lutcode.maiscontrol",
-            "googleServicesFile": "./google-services.json",
-            "versionCode": 12
-        },
-        "web": {
-            "favicon": "./src/assets/images/favicon.png"
-        },
-        "androidStatusBar": {
-            "backgroundColor": "#ab241a",
-            "barStyle": "light-content"
-        },
-        "androidNavigationBar": {
-            "backgroundColor": "#444444",
-            "barStyle": "light-content"
-        },
-        "plugins": [
-            "expo-navigation-bar"
-        ]
+  "expo": {
+    "name": "MaisControl",
+    "slug": "MaisControl",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/icon.png",
+    "scheme": "lutagro",
+    "userInterfaceStyle": "automatic",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#dadada"
+    },
+    "notification": {
+      "icon": "./src/assets/images/icone_notificacao.png",
+      "color": "#1DA1F2"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationUsageDescription": "Utilizamos sua localização para realizar o checkin!",
+        "NSLocationAlwaysUsageDescription": "Utilizamos sua localização para realizar o checkin!",
+        "NSLocationWhenInUseUsageDescription": "Utilizamos sua localização para realizar o checkin!",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Utilizamos sua localização para realizar o checkin!",
+        "NSPhotoLibraryUsageDescription": "Permita o acesso à sua biblioteca de fotos para escolher sua foto de perfil",
+        "NSCameraUsageDescription": "Permita o acesso à sua câmera para você poder tirar sua foto de perfil",
+        "NSFaceIDUsageDescription": "O Face ID será usado para autenticação no aplicativo"
+      },
+      "bundleIdentifier": "com.br.lutcode.maiscontrol"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.br.lutcode.lutagro",
+      "package": "com.br.lutcode.maiscontrol",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 12
+    },
+    "web": {
+      "favicon": "./src/assets/images/favicon.png"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#ab241a",
+      "barStyle": "light-content"
+    },
+    "androidNavigationBar": {
+      "backgroundColor": "#444444",
+      "barStyle": "light-content"
+    },
+    "plugins": [
+      "expo-navigation-bar"
+    ],
+    "extra": {
+      "expo-navigation-bar": {
+        "backgroundColor": "#444444",
+        "barStyle": "light"
+      },
+      "eas": {
+        "projectId": "f1b3ffe8-ab05-49a5-b354-39a4697e8945"
+      }
     }
+  }
 }

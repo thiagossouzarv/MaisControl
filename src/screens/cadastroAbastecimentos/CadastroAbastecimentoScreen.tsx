@@ -201,7 +201,6 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     }
 
     const next = () => {
-        
         if (validarDados(stepPosition))
             setStepPosition(stepPosition+1>=labelsStep.length? 0 : stepPosition+1)
     }
@@ -245,6 +244,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     }
 
     const handleCadastrar = () => {
+        
         if ( validarDados(undefined) ){
             return new Promise(async (resolve, reject) => {
                 try {
@@ -256,7 +256,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                         volume,
                         odometro,
                         horimetro,
-                        new Date().toDateString(),
+                        new Date().toISOString(),
                         centroCustoSelecao?.uid,
                         tipoOperacaoSelecao?.uid,
                         placaTerceiro,

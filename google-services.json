@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "570324308859",
+    "project_id": "maiscontrol-e77a1",
+    "storage_bucket": "maiscontrol-e77a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:570324308859:android:eb4e1c05beec0c563363de",
+        "android_client_info": {
+          "package_name": "com.br.lutcode.maiscontrol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "570324308859-p8d2j9kffdgjcdbsogkpebe8vsn6kl2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqlywJ0mSzqjncXwDAllJtJ6B8anN1cNE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "570324308859-p8d2j9kffdgjcdbsogkpebe8vsn6kl2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

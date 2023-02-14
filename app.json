@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    "scheme": "lutagro",
+    "scheme": "maiscontrol",
     "userInterfaceStyle": "automatic",
     "platforms": [
       "ios",
@@ -21,7 +21,8 @@
       "color": "#1DA1F2"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/f1b3ffe8-ab05-49a5-b354-39a4697e8945"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -52,7 +53,8 @@
         "WRITE_EXTERNAL_STORAGE"
       ],
       "package": "com.br.lutcode.maiscontrol",
-      "versionCode": 12
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
@@ -76,6 +78,9 @@
       "eas": {
         "projectId": "f1b3ffe8-ab05-49a5-b354-39a4697e8945"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }

@@ -85,13 +85,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                     checkInternetConnection().then( async isConnected => {
                         if (isConnected) {
                             console.log('com internet');
-                            alert('com internet')
-                            //const tokenValido = await AuthService.isTokenValid(user.Cpf, storagedToken)
-                            //if (tokenValido) await updateAuthInfo(user, storagedToken)
-                            //else signOut()
+                            //alert('com internet')
+                            const tokenValido = await AuthService.isTokenValid(user.Cpf, storagedToken)
+                            if (tokenValido) await updateAuthInfo(user, storagedToken)
+                            else signOut()
                         } else {
                             alert('sem internet')
-                            console.log('sem internet');
+                            await updateAuthInfo(user, storagedToken)
+                            console.log('sem internet')
                         }
                     })
                     //const newToken = await AuthService.refreshToken()

@@ -8,6 +8,7 @@ import AsyncUtils from "../utils/async"
 import AuthService, { Cliente, User } from "../services/core/auth"
 import { AppConfig } from "../core/config"
 import Http from "../services/core/http"
+import checkInternetConnection from "../utils/isConection"
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
@@ -81,11 +82,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
                 if (storagedUser && storagedToken) {
                     const user: User = JSON.parse(storagedUser)
-
-                    const tokenValido = await AuthService.isTokenValid(user.Cpf, storagedToken)
-
-                    if (tokenValido) await updateAuthInfo(user, storagedToken)
-                    else signOut()
+                    checkInternetConnection().then( async isConnected => {
+                        if (isConnected) {
+                            console.log('com internet');
+                            const tokenValido = await AuthService.isTokenValid(user.Cpf, storagedToken)
+                            if (tokenValido) await updateAuthInfo(user, storagedToken)
+                            else signOut()
+                        } else {
+                            Http.processError(404, "Sem intenet")
+                            console.log('sem internet');
+                        }
+                    })
                     //const newToken = await AuthService.refreshToken()
                     //await updateAuthInfo(user, newToken)
                 }

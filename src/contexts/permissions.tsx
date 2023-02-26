@@ -132,8 +132,8 @@ export function PermissionsProvider({ children }: { children: React.ReactNode })
     const requestNotificationsPermission = useCallback((): Promise<void> => {
         return new Promise(async (resolve, reject) => {
             try {
-                await PushNotificationService.updateServerToken();
-                await updateNotificationsStatus();
+                //await PushNotificationService.updateServerToken();
+                //await updateNotificationsStatus();
                 resolve();
 
             } catch (error) {
@@ -163,9 +163,9 @@ export function PermissionsProvider({ children }: { children: React.ReactNode })
         if (Platform.OS === 'ios') {
             //Linking.openURL(`App-Prefs:NOTIFICATIONS_ID`);
             try {
-                await PushNotificationService.updateServerToken();
+                /*await PushNotificationService.updateServerToken();
                 const response = await PushNotificationService.getRequestPermissionStatus();
-                if (!response.enabled) throw new Error();
+                if (!response.enabled) throw new Error();*/
 
                 //PushNotificationService.trySendPushTokenToServer().catch(e => {});
 

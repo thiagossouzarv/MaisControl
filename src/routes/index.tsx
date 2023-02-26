@@ -20,8 +20,8 @@ const Routes: React.FC = () => {
     useEffect(function enviarPushNotificationToken() {
         try {
             if (pendenciasResolvidas) {
-                console.log('tentando enviar push notification novamente...');
-                setTimeout(() => PushNotificationService.updateServerToken().catch(error => console.log(error)), 5000);
+                //console.log('tentando enviar push notification novamente...');
+                //setTimeout(() => PushNotificationService.updateServerToken().catch(error => console.log(error)), 5000);
             }
         } catch (error) { }
     }, [pendenciasResolvidas]);

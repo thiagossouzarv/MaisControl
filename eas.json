@@ -6,12 +6,14 @@
     "development": {
       "developmentClient": false,
       "distribution": "internal",
+      "channel": "teste",
       "ios": {
         "resourceClass": "m1-medium"
       }
     },
     "preview": {
       "distribution": "internal",
+      "channel": "dev",
       "ios": {
         "resourceClass": "m1-medium"
       }
@@ -19,7 +21,8 @@
     "production": {
       "ios": {
         "resourceClass": "m1-medium"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {

@@ -97,7 +97,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     const [carregandoPagina, setCarregandoPagina] = useState(true)
     const [carregando, setCarregando] = useState(true)
     const [stepPosition, setStepPosition] = useState(0)
-    const [labelsStep, setLabelsStep] = useState(['Indentificação', 'Funcionario/Veiculo', 'Abastecimento'])
+    const [labelsStep, setLabelsStep] = useState(['Indentificação', 'Veículo', 'Abastecimento'])
 
     const veiculos: Veiculo[] = useMemo(() => {
         return ArrayUtils.removeDuplicates(listaVeiculos.map(o => ({

@@ -22,6 +22,7 @@
     "expo-local-authentication": "~12.3.0",
     "expo-location": "~14.3.0",
     "expo-navigation-bar": "~1.3.0",
+    "expo-network": "~4.3.0",
     "expo-notifications": "~0.16.1",
     "expo-print": "~11.3.0",
     "expo-splash-screen": "~0.16.2",

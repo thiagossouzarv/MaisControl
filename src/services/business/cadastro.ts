@@ -1,19 +1,31 @@
-import ArrayUtils from "../../utils/array"
-import Moment from "../../utils/date"
+import checkInternetConnection from "../../utils/isConection"
 import api from "../core/api"
 import Http, { HttpBaseResponse } from "../core/http"
+import DataOffline from "../core/DataOffline"
 
 export default class CadastroService {
     static getCadastroBasicosAbastecimentos(): Promise<Dados> {
         return new Promise(async (resolve, reject) => {
             try {
-                const resp: GetCadastroBasicosAbastecimentosResponse = await api.get("CadastrosBasicos/GetCadastroBasicosAbastecimentos")
-                const validate = Http.validate(resp)
 
-                if (validate.hasError)
-                    return reject(validate.rejection)
+                checkInternetConnection().then( async isConnected => {
+                    if (isConnected) {
+                        const resp: GetCadastroBasicosAbastecimentosResponse = await api.get("CadastrosBasicos/GetCadastroBasicosAbastecimentos")
+                        const validate = Http.validate(resp)
+        
+                        if (validate.hasError)
+                            return reject(validate.rejection)
+        
+                        resolve(resp.Data)
+                    } else {
+                        console.log('carregou offline')
+                        resolve(
+                            DataOffline.getDadosCadastroOffline()
+                        )
+                    }
+                })
 
-                resolve(resp.Data)
+                
 
             } catch (error: any) {
                 reject(Http.processError(error))
@@ -36,8 +48,7 @@ export default class CadastroService {
     ): Promise<CadastroResponse> {
         return new Promise(async (resolve, reject) => {
             try {
-
-                const resp: CadastroResponse = await api.post("abastecimento/GravarAbastecimentoInterno", {
+                var post = {
                     IdBicoGuid: IdBicoGuid,
                     IdTagVeiculoGuid: IdTagVeiculoGuid,
                     IdTagFuncionarioGuid: IdTagFuncionarioGuid,
@@ -49,14 +60,25 @@ export default class CadastroService {
                     IdTipoOperacaoGuid: IdTipoOperacaoGuid,
                     DescricaoTerceiro: DescricaoTerceiro,
                     Observacao: Observacao
+                }
+                checkInternetConnection().then( async isConnected => {
+                    if (isConnected) {
+                        console.log('gravou online')
+                        const resp: CadastroResponse = await api.post("abastecimento/GravarAbastecimentoInterno", post)
+
+                        const validate = Http.validate(resp)
+
+                        if (validate.hasError)
+                            return reject(validate.rejection)
+
+                        resolve(resp)
+                    } else {
+                        console.log('gravou offline')
+                        resolve(
+                            DataOffline.setCadastroAbastecimentoOffline(post)
+                        )
+                    }
                 })
-
-                const validate = Http.validate(resp)
-
-                if (validate.hasError)
-                    return reject(validate.rejection)
-
-                resolve(resp)
 
             } catch (error: any) {
                 reject(Http.processError(error))

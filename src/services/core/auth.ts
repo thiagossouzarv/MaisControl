@@ -5,6 +5,7 @@ import Http, { ErrorResponse, HttpBaseResponse } from "./http"
 import { STORAGE_ID_BIO_AUTHENTICATION } from "../../constants/globals"
 import api, { API_BASE_URL } from "./api"
 import ArrayUtils from "../../utils/array"
+import DataOffline from "./DataOffline"
 
 export default class AuthService {
     static signIn(
@@ -46,6 +47,9 @@ export default class AuthService {
 
                 if (validate.hasError || !resp.Data)
                     return reject(validate.rejection)
+                
+                //carregar todos os dados para uso offline
+                DataOffline.carregarDadosOffline()
 
                 resolve({
                     token: resp.Data.Token,

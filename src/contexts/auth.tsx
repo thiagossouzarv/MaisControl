@@ -9,6 +9,7 @@ import AuthService, { Cliente, User } from "../services/core/auth"
 import { AppConfig } from "../core/config"
 import Http from "../services/core/http"
 import checkInternetConnection from "../utils/isConection"
+import DataOffline from "../services/core/DataOffline"
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
@@ -87,10 +88,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                             console.log('com internet');
                             //alert('com internet')
                             const tokenValido = await AuthService.isTokenValid(user.Cpf, storagedToken)
-                            if (tokenValido) await updateAuthInfo(user, storagedToken)
+                            if (tokenValido) {
+                                await updateAuthInfo(user, storagedToken)
+                                DataOffline.carregarDadosOffline()
+                            }
                             else signOut()
                         } else {
-                            alert('sem internet')
+                            //alert('sem internet')
                             await updateAuthInfo(user, storagedToken)
                             console.log('sem internet')
                         }

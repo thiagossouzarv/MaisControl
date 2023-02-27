@@ -1,23 +1,12 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { PageBaseProps } from "../../components/core"
 import { MessagerHandler, Messager } from "../../components/dialogs"
-import { AppFlatList, Divider, NoItem, PageLoading, Separator } from "../../components/utils"
+import { Divider, PageLoading, Separator } from "../../components/utils"
 import useTrackingMounting from "../../hooks/core/useTrackingMounting"
-
-
-import { useWindowDimensions } from 'react-native'
-import { TabView, TabBar } from 'react-native-tab-view'
-
 import * as UI from "./CadastroAbastecimentoScreenStyle"
-import TanquesScreen, { TanquesScreenHandler } from "../tanques/TanquesScreen"
-import { Button, Dropdown, DropPeriod, FixedButton, Input, InputHandler, StepIndicator } from "../../components/form"
-import Moment from "../../utils/date"
 import ArrayUtils from "../../utils/array"
-import ReportUtils, { ReportGroup } from "../../utils/report"
-import { Icon } from "../../components/ui"
-import Item from "../clientes/components/item/Item"
+import { Button, Dropdown, FixedButton, Input, StepIndicator } from "../../components/form"
 import CadastroService, { Bicos, CentroDeCusto, Funcionarios, TiposOperacao, Veiculos } from "../../services/business/cadastro"
-import { Masks } from "react-native-mask-input"
 
 
 interface CadastroAbastecimentoScreenProps extends PageBaseProps { }
@@ -27,40 +16,9 @@ const CadastroAbastecimentoScreen: React.FC<PageBaseProps> = ({
     route,
     navigation
 }) => {
-    const _tanquesScreen = useRef<TanquesScreenHandler>()
-
-    const layout = useWindowDimensions()
-
-    const [aba, setAba] = React.useState(0)
-    const [abas] = React.useState([
-        { key: 'abastecimentos', title: 'Abastecimentos' },
-        { key: 'tanques', title: 'Tanques' },
-    ])
-
-    const paginacao = useCallback((props: any) => {
-        switch (props.route.key) {
-            case 'abastecimentos':
-                return <AbastecimentosPage navigation={navigation} route={route} />
-            case 'tanques':
-                return <TanquesScreen ref={_tanquesScreen} navigation={navigation} route={route} />
-            default:
-                return null
-        }
-    }, [route, navigation])
-
-    const handleChangeAba = useCallback(() => {
-        _tanquesScreen.current?.resetScroll()
-    }, [])
 
     return (
-        <TabView
-            navigationState={{ index: aba, routes: abas }}
-            renderScene={paginacao}
-            renderTabBar={renderTabBar}
-            onIndexChange={setAba}
-            initialLayout={{ width: layout.width }}
-            onSwipeStart={handleChangeAba}
-        />
+        <AbastecimentosPage navigation={navigation} route={route} />
     )
 }
 
@@ -505,15 +463,6 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     )
 }
 
-const renderTabBar = (props: any) => {
-    return (
-        <TabBar
-            {...props}
-            style={{ display: "none" }}
-            scrollEnabled
-        />
-    )
-}
 
 export default CadastroAbastecimentoScreen
 

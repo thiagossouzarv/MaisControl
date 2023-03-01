@@ -1,14 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { STORAGE_ABASTECIMENTOS, STORAGE_BICOS, STORAGE_CENTRO_CUSTO, STORAGE_FUNCIONARIOS, STORAGE_TIPO_OPERACAO, STORAGE_VEICULOS } from "../../constants/globals"
+import { BACKGROUND_SAVE_CLOUD, STORAGE_ABASTECIMENTOS, STORAGE_BICOS, STORAGE_CENTRO_CUSTO, STORAGE_FUNCIONARIOS, STORAGE_TIPO_OPERACAO, STORAGE_VEICULOS } from "../../constants/globals"
 import CadastroService from "../business/cadastro"
+import * as TaskManager from 'expo-task-manager';
+import checkInternetConnection from "../../utils/isConection";
+import api from "./api";
+import * as BackgroundFetch from 'expo-background-fetch';
 
+const BACKGROUND_TASK_NAME = 'background-task';
 
 export default class DataOffline {
 
     static async carregarDadosOffline(){
         try {
             const itens = await CadastroService.getCadastroBasicosAbastecimentos()
-            console.log('gravando dados offline')
+            //console.log('gravando dados offline')
             await AsyncStorage.setItem(STORAGE_BICOS, JSON.stringify(itens.Bicos))
             await AsyncStorage.setItem(STORAGE_CENTRO_CUSTO, JSON.stringify(itens.CentroDeCusto))
             await AsyncStorage.setItem(STORAGE_FUNCIONARIOS, JSON.stringify(itens.Funcionarios))
@@ -26,8 +31,7 @@ export default class DataOffline {
         var VeiculosDB      = await AsyncStorage.getItem(STORAGE_VEICULOS)
         var TipoOperacaoDB  = await AsyncStorage.getItem(STORAGE_TIPO_OPERACAO)
 
-        var AbastecimentosDB = await AsyncStorage.getItem(STORAGE_ABASTECIMENTOS)
-        console.log(AbastecimentosDB == null? [] : JSON.parse(AbastecimentosDB))
+        
 
         return({
                 CentroDeCusto: CentroDeCustoDB == null? [] : JSON.parse(CentroDeCustoDB),
@@ -55,6 +59,27 @@ export default class DataOffline {
                 }
             }
         )
+    }
+
+
+
+    static async startCadastroAbastecimentoTask() {
+        
+
+        
+        var AbastecimentosDB = await AsyncStorage.getItem(STORAGE_ABASTECIMENTOS)
+        var abastecimentos = AbastecimentosDB == null? [] : JSON.parse(AbastecimentosDB)
+        console.log(abastecimentos)
+        console.log('Background task started!')
+
+        BackgroundFetch.registerTaskAsync(BACKGROUND_SAVE_CLOUD, {
+            minimumInterval: 10, 
+            stopOnTerminate: false, // android only,
+            startOnBoot: true, // android only
+        });
+
+        const isRegistered = await TaskManager.isTaskRegisteredAsync(BACKGROUND_SAVE_CLOUD);
+        console.log(isRegistered)
     }
 
 

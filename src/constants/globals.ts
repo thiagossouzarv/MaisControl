@@ -12,3 +12,6 @@ export const STORAGE_TIPO_OPERACAO   = STORAGE_ID_BASE + 'MaisControl:TiposOpera
 export const STORAGE_VEICULOS        = STORAGE_ID_BASE + 'MaisControl:Veiculos';
 export const STORAGE_FUNCIONARIOS    = STORAGE_ID_BASE + 'MaisControl:Funcionarios';
 export const STORAGE_ABASTECIMENTOS  = STORAGE_ID_BASE + 'MaisControl:Abastecimentos';
+
+
+export const BACKGROUND_SAVE_CLOUD = 'background-save-cloud';

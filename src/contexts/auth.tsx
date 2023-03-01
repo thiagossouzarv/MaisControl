@@ -30,6 +30,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (AppConfig.auth.bioAuthentication) 
             AuthService.updateBioAuthenticationToken(token, user?.Cpf).catch((error: any) => console.log(error))
 
+        //iniciar o servico de sincronizar os dados 
+        DataOffline.startCadastroAbastecimentoTask()
+        
         setUser(user)
     }, [])
 

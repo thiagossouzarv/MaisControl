@@ -1,5 +1,6 @@
 import ArrayUtils from "../../utils/array"
 import Moment from "../../utils/date"
+import checkInternetConnection from "../../utils/isConection"
 import api from "../core/api"
 import Http, { HttpBaseResponse } from "../core/http"
 
@@ -27,25 +28,30 @@ export default class EstoqueService {
     static getAbastecimentos(dataInicial: Date, dataFinal: Date): Promise<Abastecimento[]> {
         const errorMessage = ""
         return new Promise(async (resolve, reject) => {
-            try {                
-                const resp: HttpBaseResponse = await api.get(`abastecimento/GetAbastecimentos?dataInicial=${Moment.formatDate(dataInicial)}&dataFinal=${Moment.formatDate(dataFinal)}`)
-                const validate = Http.validate(resp, errorMessage)
+            try {  
+                const is_connect = await checkInternetConnection().then()
+                if (is_connect){
+                    const resp: HttpBaseResponse = await api.get(`abastecimento/GetAbastecimentos?dataInicial=${Moment.formatDate(dataInicial)}&dataFinal=${Moment.formatDate(dataFinal)}`)
+                    const validate = Http.validate(resp, errorMessage)
 
-                if (validate.hasError)
-                    return reject(validate.rejection)
+                    if (validate.hasError)
+                        return reject(validate.rejection)
 
-                const abastecimentos: Abastecimento[] = (resp.Data.ListaAbastecimentos || []).filter(o => !o.Cancelado).map((o: Abastecimento) => {
-                    o.Data = o.Data ? Moment.formatDateTime(Moment.fromDateString(o.Data.replace("T", " ")), false) : o.Data
-                    o.Empresa = o.Empresa || "Não Identificado"
-                    o.IdEmpresaGuid = (o.IdEmpresaGuid || "-1").toString()
-                    o.Produto = o.Produto || "Não Identificado"
-                    o.IdProduto = (o.IdProduto || "-1").toString()
-                    return o
-                })
-                
-                resolve(ArrayUtils.sort(abastecimentos, item => [
-                    [item.Data ? Moment.fromDateString(item.Data).getTime() : -1, "asc"]
-                ]))
+                    const abastecimentos: Abastecimento[] = (resp.Data.ListaAbastecimentos || []).filter(o => !o.Cancelado).map((o: Abastecimento) => {
+                        o.Data = o.Data ? Moment.formatDateTime(Moment.fromDateString(o.Data.replace("T", " ")), false) : o.Data
+                        o.Empresa = o.Empresa || "Não Identificado"
+                        o.IdEmpresaGuid = (o.IdEmpresaGuid || "-1").toString()
+                        o.Produto = o.Produto || "Não Identificado"
+                        o.IdProduto = (o.IdProduto || "-1").toString()
+                        return o
+                    })
+                    
+                    resolve(ArrayUtils.sort(abastecimentos, item => [
+                        [item.Data ? Moment.fromDateString(item.Data).getTime() : -1, "asc"]
+                    ]))
+                } else {
+                    resolve([])
+                }
 
             } catch (error: any) {
                 reject(Http.processError(error, errorMessage))

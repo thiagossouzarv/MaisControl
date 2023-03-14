@@ -12,7 +12,7 @@ export default class CadastroService {
                     if (isConnected) {
                         const resp: GetCadastroBasicosAbastecimentosResponse = await api.get("CadastrosBasicos/GetCadastroBasicosAbastecimentos")
                         const validate = Http.validate(resp)
-        
+                        
                         if (validate.hasError)
                             return reject(validate.rejection)
         
@@ -28,6 +28,7 @@ export default class CadastroService {
                 
 
             } catch (error: any) {
+                console.log(error)
                 reject(Http.processError(error))
             }
         })

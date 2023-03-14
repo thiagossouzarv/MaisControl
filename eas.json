@@ -8,7 +8,6 @@
       "distribution": "internal",
       "channel": "teste",
       "ios": {
-        "credentialsSource": "local",
         "resourceClass": "m1-medium"
       }
     },
@@ -16,15 +15,14 @@
       "distribution": "internal",
       "channel": "dev",
       "ios": {
-        "credentialsSource": "local",
         "resourceClass": "m1-medium"
       }
     },
     "production": {
       "ios": {
-        "credentialsSource": "local",
         "resourceClass": "m1-medium"
       },
+      
       "channel": "production"
     }
   },

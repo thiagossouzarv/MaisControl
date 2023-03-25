@@ -23,6 +23,9 @@ const Abastecimento: React.FC<AbastecimentoProps> = ({
                 <UI.Info>
                     <ListItemSubtitle2>{info.Data}</ListItemSubtitle2>
                     <ListItemInfo2>{info.Placa ? `Placa ${info.Placa}` : info.DescricaoVeiculo ? info.DescricaoVeiculo : "Veículo não identificado"}</ListItemInfo2>
+                    {info.CentroCusto? 
+                        <ListItemInfo2>Centro de custo: {info.CentroCusto}</ListItemInfo2>
+                    : null}
                 </UI.Info>
 
                 <Counter

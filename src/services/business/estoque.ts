@@ -113,6 +113,7 @@ export interface Abastecimento {
     DescricaoProduto?: string
     Combustivel?: string
     VolumeTotal: number,
+    CentroCusto?: string,
     /*
     ValorTotal":1000.846,
     ValorPorLitro?: number,
@@ -134,7 +135,7 @@ export interface Abastecimento {
     CNPJ?: string,    
     CartaoFuncionario?: string,
     CartaoVeiculo?: string,
-    CentroCusto?: string,
+    
     ChaveAcessoNFe?: string,
     CnpjPostoExterno?: string,
     CodigoCartaoFuncionario?: string,

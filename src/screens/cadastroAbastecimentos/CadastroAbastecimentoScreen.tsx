@@ -60,14 +60,15 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
     const veiculos: Veiculo[] = useMemo(() => {
         return ArrayUtils.removeDuplicates(listaVeiculos.map(o => ({
             uid: o.GUID,
-            nome: o.PlacaDescricao
+            nome: o.DescricaoVeiculo + ( o.Placa != '' ? ( ' Placa:' + o.Placa ) : '' ),
+            subtitle: o.NumeroFrota
         } as Veiculo)), "uid")
     }, [listaVeiculos])
 
     const funcionarios: Funcionario[] = useMemo(() => {
         return ArrayUtils.removeDuplicates(listaFuncionarios.map(o => ({
             uid: o.GUID,
-            nome: o.NomeFuncionario
+            nome: o.NomeFuncionario,
         } as Funcionario)), "uid")
     }, [listaFuncionarios])
 
@@ -265,7 +266,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             map={{
                                 key: "uid",
                                 title: "nome",
-                                subtitle: "nome",
+                                subtitle: "subtitle",
                                 icon: "map-marker-radius-outline",
                                 iconSource: "material-community",
                                 iconColor: "fg:main"
@@ -285,7 +286,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             map={{
                                 key: "uid",
                                 title: "nome",
-                                subtitle: "nome",
+                                subtitle: "subtitle",
                                 icon: "map-marker-radius-outline",
                                 iconSource: "material-community",
                                 iconColor: "fg:main"
@@ -306,7 +307,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             map={{
                                 key: "uid",
                                 title: "nome",
-                                subtitle: "nome",
+                                subtitle: "subtitle",
                                 icon: "map-marker-radius-outline",
                                 iconSource: "material-community",
                                 iconColor: "fg:main"
@@ -332,7 +333,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                             map={{
                                 key: "uid",
                                 title: "nome",
-                                subtitle: "nome",
+                                subtitle: "subtitle",
                                 icon: "map-marker-radius-outline",
                                 iconSource: "material-community",
                                 iconColor: "fg:main"
@@ -389,7 +390,7 @@ const AbastecimentosPage: React.FC<CadastroAbastecimentoScreenProps> = ({
                         map={{
                             key: "uid",
                             title: "nome",
-                            subtitle: "nome",
+                            subtitle: "subtitle",
                             icon: "map-marker-radius-outline",
                             iconSource: "material-community",
                             iconColor: "fg:main"

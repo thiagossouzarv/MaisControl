@@ -2,7 +2,7 @@
   "expo": {
     "name": "MaisControl",
     "slug": "MaisControl",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "maiscontrol",
@@ -54,7 +54,7 @@
       ],
       "package": "com.br.lutcode.maiscontrol",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"

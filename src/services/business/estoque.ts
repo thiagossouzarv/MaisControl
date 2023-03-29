@@ -45,10 +45,10 @@ export default class EstoqueService {
                         o.IdProduto = (o.IdProduto || "-1").toString()
                         return o
                     })
-                    
-                    resolve(ArrayUtils.sort(abastecimentos, item => [
+                    resolve(abastecimentos)
+                    /*resolve(ArrayUtils.sort(abastecimentos, item => [
                         [item.Data ? Moment.fromDateString(item.Data).getTime() : -1, "asc"]
-                    ]))
+                    ]))*/
                 } else {
                     resolve([])
                 }

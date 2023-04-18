@@ -19,12 +19,16 @@ const ICONS = {
     back: {
         icon: "chevron-left",
         source: "entypo" as IconType
+    },
+    save: {
+        icon: "save",
+        source: "entypo" as IconType
     }
 }
 
 interface FixedButtonProps {
    onPress: () => void
-   type?: "next" | "confirm" | "add" | "back"
+   type?: "next" | "confirm" | "add" | "back" | "save"
    visible?: boolean
    left?: boolean
 }

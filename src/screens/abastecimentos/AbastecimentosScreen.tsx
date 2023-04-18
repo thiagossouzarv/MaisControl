@@ -145,7 +145,8 @@ const AbastecimentosPage: React.FC<AbastecimentosScreenProps> = ({
     const renderAbastecimento = ({ item }: any) => {
         return (
             <AbastecimentoItem
-                info={item} />
+                info={item}
+                navigation={navigation} />
         )
     }
 

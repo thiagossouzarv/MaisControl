@@ -5,7 +5,7 @@ import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { APP_SCREENS } from "./screens";
 import screenOptions, { DrawerScreenOptions } from "./screenOptions";
 import AppMenu from "./appMenu/AppMenu";
-import { AbastecimentosScreen, AlterarSenhaScreen, ClientesScreen, MenuScreen, PermissoesScreen, CadastroAbastecimentoScreen } from "../screens";
+import { AbastecimentosScreen, AlterarSenhaScreen, ClientesScreen, MenuScreen, PermissoesScreen, CadastroAbastecimentoScreen, AbastecimentoDetalhesScreen } from "../screens";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuth } from "../contexts/auth";
 
@@ -44,6 +44,13 @@ const AppRoutes: React.FC = () => (
             component={PermissoesScreen}
             options={{
                 title: "Permissões",
+            }} />
+        
+        <AppStack.Screen
+            name={APP_SCREENS.AbastecimentoDetalhes}
+            component={AbastecimentoDetalhesScreen}
+            options={{
+                title: "Abastecimento Detalhes",
             }} />
 
     </AppStack.Navigator>

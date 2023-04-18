@@ -4,6 +4,7 @@ export { default as Search } from "./search/Search";
 export { default as Check } from "./check/Check";
 export { default as Toggle } from "./toggle/Toggle";
 export { default as InfoHeader } from "./infoHeader/InfoHeader";
+export { default as InfoLabel } from "./infoLabel/InfoLabel";
 export { default as ButtonBasic } from "./buttonBasic/ButtonBasic";
 export { default as ListItem, ListItemTitle, ListItemSubtitle, ListItemProps, ListItemHandler, ListItemInfo, ListItemInfo2, ListItemInfo3, ListItemSubtitle2, ListItemSubtitle3, ListItemTitle2, ListItemTitle3 } from "./list/listItem/ListItem";
 export { default as NoItemList } from "./list/noItem/NoItem";

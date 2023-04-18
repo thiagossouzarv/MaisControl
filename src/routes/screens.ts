@@ -11,6 +11,7 @@ export const APP_SCREENS = {
     Tanques: "app.Tanques",
     Abastecimentos: "app.Abastecimentos",
     CadastroAbastecimento: "app.CadastroAbastecimento",
+    AbastecimentoDetalhes: "app.AbastecimentoDetalhesScreen",
     Clientes: "app.Clientes",
 
     Menu: "app.Menu",

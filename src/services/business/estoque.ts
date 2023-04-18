@@ -108,6 +108,30 @@ export interface Abastecimento {
     Empresa: string
     Placa?: string
     DescricaoVeiculo?: string
+    VeiculoEquipamento:string
+    GrupoVeiculo: string
+    NumeroFrota: string
+    Frentista: string
+    Motorista: string
+
+    Litragem:number
+	ValorTotal:string
+	ValorPorLitro:string
+	KM:number
+	Horimetro:number
+	CentroDeCusto:string
+	TipoOperacao:string
+	Observacao:string
+	LocalAbastecimento:string
+	NumeroNFe:string
+	Tanque:string
+	Bico:string
+	AbastecimentoManual:string
+	AbastecimentoExterno:string
+	AbastecimentoCancelado:string
+	AbastecimentoVeioDoMobile:string
+	AbastecimentoAfericao:string
+
     IdProduto: string
     Produto: string
     DescricaoProduto?: string
@@ -164,7 +188,7 @@ export interface Abastecimento {
     IdConcentradorGuid":null,
     IdCusto":null,
     IdMotorista":null,
-    IdMotoristaGuid":"",
+    IdMotoristaGuid:",
     IdOrdemAbastecimentoGuid":null,    
     IdProdutoIntegracaoAtua":0,
     IdRegistroWeb":0,
@@ -185,12 +209,12 @@ export interface Abastecimento {
     MacConcentradorPai":null,
     MediaPorKm":0,
     MediaPorKmGeral":0,
-    NomeFilial":"FAZENDA BRASILANDA",    
-    Observacao":"",
+    NomeFilial:FAZENDA BRASILANDA",    
+    Observacao:",
     Odometro":25110,
     PossivelErro":0,
-    ProdutoIntegracao":"",
-    RazaoSocial":"FAZENDA BRASILANDA",
+    ProdutoIntegracao:",
+    RazaoSocial:FAZENDA BRASILANDA",
     Registro":null,
     StringOriginal":null,    
     TempoDuracao":177,
@@ -200,5 +224,5 @@ export interface Abastecimento {
     VirgulaPrecoUnitario":null,
     VirgulaTotal":null,
     VirgulaVolume":null,
-    codexterno":""*/
+    codexterno:"*/
 }

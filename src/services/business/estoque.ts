@@ -58,6 +58,32 @@ export default class EstoqueService {
             }
         })
     }
+
+    static getAbastecimentosDetalhes(GUID: string): Promise<Abastecimento> {
+        const errorMessage = ""
+        return new Promise(async (resolve, reject) => {
+            try {  
+                const is_connect = await checkInternetConnection().then()
+                if (is_connect){
+                    const resp: HttpBaseResponse = await api.get(`abastecimento/GetAbastecimentosDetalhes?guid=${GUID}`)
+                    const validate = Http.validate(resp, errorMessage)
+
+                    if (validate.hasError)
+                        return reject(validate.rejection)
+
+                    resolve(resp.Data)
+                    /*resolve(ArrayUtils.sort(abastecimentos, item => [
+                        [item.Data ? Moment.fromDateString(item.Data).getTime() : -1, "asc"]
+                    ]))*/
+                } else {
+                    resolve(undefined)
+                }
+
+            } catch (error: any) {
+                reject(Http.processError(error, errorMessage))
+            }
+        })
+    }
 }
 
 
@@ -138,6 +164,7 @@ export interface Abastecimento {
     Combustivel?: string
     VolumeTotal: number,
     CentroCusto?: string,
+    DataHora: string,
     /*
     ValorTotal":1000.846,
     ValorPorLitro?: number,

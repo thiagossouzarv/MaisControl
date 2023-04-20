@@ -56,7 +56,7 @@ const Abastecimento: React.FC<AbastecimentoProps> = ({
 
                 <Counter
                     label="litros"
-                    value={NumberUtils.format(info.VolumeTotal, 1, true) as string}
+                    value={NumberUtils.format(info.VolumeTotal, 2, true) as string}
                     alignment="flex-end" />
             </UI.Container>
         </ListItem>

@@ -5,7 +5,7 @@ import { Divider, PageLoading, Separator } from "../../components/utils"
 import useTrackingMounting from "../../hooks/core/useTrackingMounting"
 import * as UI from "./AbastecimentoDetalhesScreenStyle"
 import { FixedButton, InfoLabel} from "../../components/form"
-import { Abastecimento } from "../../services/business/estoque"
+import EstoqueService, { Abastecimento } from "../../services/business/estoque"
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as Print from 'expo-print';
@@ -37,6 +37,7 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
     const [carregandoPagina, setCarregandoPagina] = useState(true)
     const [carregando, setCarregando] = useState(true)
     const [abastecimento, setAbastecimento] = useState<Abastecimento>()
+    const [abastecimentoGUID, setAbastecimentoGUID] = useState<string>()
 
 
     useEffect(function carregarPagina() {
@@ -46,7 +47,11 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
     const carregar = async () => {
         try {
             setCarregando(true)
-            const abastecimento = route.params
+            const abastecimento_para = route.params
+            //console.log(abastecimento_para?.GUID)
+            setAbastecimentoGUID(abastecimento_para?.GUID)
+            const abastecimento = await EstoqueService.getAbastecimentosDetalhes(abastecimento_para?.GUID)
+            //console.log(abastecimento)
             setAbastecimento(abastecimento)
         } catch (error: any) {
             execSafe(() => _messager.current?.setError(error.userMessage || "Falha ao carregar a página."))
@@ -68,7 +73,8 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
         try {
             // Cria o PDF
             setCarregando(true)
-            const { uri } = await Print.printToFileAsync({ html: `<div style="border: groove; padding: 10px;" ><p><b>Data:</b> ${abastecimento?.Data}</p>
+            const { uri } = await Print.printToFileAsync({ html: `<h1 style="text-align: center;">DETALHES DO ABASTECIMENTO</h1>
+            <div style="border: groove; padding: 10px;" ><p><b>Data:</b> ${abastecimento?.DataHora}</p>
             <p><b>Veículo/Equipamento:</b> ${abastecimento?.VeiculoEquipamento != undefined ? abastecimento?.VeiculoEquipamento: ''}</p>
             <p><b>Grupo:</b> ${abastecimento?.GrupoVeiculo != undefined ? abastecimento?.GrupoVeiculo: ''}</p>
             <p><b>N° Frota:</b> ${abastecimento?.NumeroFrota != undefined ? abastecimento?.NumeroFrota: ''}</p>
@@ -81,21 +87,24 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
             <p><b>Horímetro:</b> ${abastecimento?.Horimetro != undefined ? abastecimento?.Horimetro: ''}</p>
             <p><b>Centro de Custo:</b> ${abastecimento?.CentroDeCusto != undefined ? abastecimento?.CentroDeCusto: ''}</p>
             <p><b>Tipo de operação:</b> ${abastecimento?.TipoOperacao != undefined ? abastecimento?.TipoOperacao: ''}</p>
-            <p><b>Obsercação:</b> ${abastecimento?.Observacao != undefined ? abastecimento?.Observacao: ''}</p>
+            <p><b>Observação:</b> ${abastecimento?.Observacao != undefined ? abastecimento?.Observacao: ''}</p>
             <p><b>Local Abastecimento:</b> ${abastecimento?.LocalAbastecimento != undefined ? abastecimento?.LocalAbastecimento: ''}</p>
             <p><b>NFe:</b> ${abastecimento?.NumeroNFe != undefined ? abastecimento?.NumeroNFe: ''}</p>
             <p><b>Tanque:</b> ${abastecimento?.Tanque != undefined ? abastecimento?.Tanque: ''}</p>
             <p><b>Bico:</b> ${abastecimento?.Bico != undefined ? abastecimento?.Bico: ''}</p>
-            </br>
+            <div style="
+                height: 5px;
+            "></div>
             <p><b>Abastecimento Manual:</b> ${abastecimento?.AbastecimentoManual != undefined ? abastecimento?.AbastecimentoManual: ''}</p>
             <p><b>Mobile:</b> ${abastecimento?.AbastecimentoVeioDoMobile != undefined ? abastecimento?.AbastecimentoVeioDoMobile: ''}</p>
             <p><b>Cancelado:</b> ${abastecimento?.AbastecimentoCancelado != undefined ? abastecimento?.AbastecimentoCancelado: ''}</p>
             <p><b>Aferição:</b> ${abastecimento?.AbastecimentoAfericao != undefined ? abastecimento?.AbastecimentoAfericao: ''}</p>
             <p><b>Abastecimento Externo:</b> ${abastecimento?.AbastecimentoExterno != undefined ? abastecimento?.AbastecimentoExterno: ''}</p>
-            </div>` });
+            </div>
+            <p style="margin-left: 10px;"><b>Copyright:</b> MaisControl desenvolvimento@maiscontrol.com.br</p>` });
 
             // Define o nome do arquivo
-            const fileName = `abastecimento-${abastecimento?.IdAbastecimento}.pdf`;
+            const fileName = `abastecimento-${abastecimentoGUID}.pdf`;
 
             // Verifica se o diretório de downloads está disponível
             const dirInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'downloads/');
@@ -127,7 +136,7 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
             <UI.Main>
                 <UI.Content>
                     <UI.Detalhes>
-                        <InfoLabel title="Data:" subtitle={abastecimento?.Data}></InfoLabel>
+                        <InfoLabel title="Data:" subtitle={abastecimento?.DataHora}></InfoLabel>
                         <InfoLabel title="Veículo/Equipamento:" subtitle={abastecimento?.VeiculoEquipamento}></InfoLabel>
                         <InfoLabel title="Grupo:" subtitle={abastecimento?.GrupoVeiculo}></InfoLabel>
                         <InfoLabel title="N° Frota:" subtitle={abastecimento?.NumeroFrota}></InfoLabel>
@@ -141,7 +150,7 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
                         <InfoLabel title="Horímetro:" subtitle={abastecimento?.Horimetro}></InfoLabel>
                         <InfoLabel title="Centro de Custo:" subtitle={abastecimento?.CentroDeCusto}></InfoLabel>
                         <InfoLabel title="Tipo de operação:" subtitle={abastecimento?.TipoOperacao}></InfoLabel>
-                        <InfoLabel title="Obsercação:" subtitle={abastecimento?.Observacao}></InfoLabel>
+                        <InfoLabel title="Observação:" subtitle={abastecimento?.Observacao}></InfoLabel>
                         <InfoLabel title="Local Abastecimento:" subtitle={abastecimento?.LocalAbastecimento}></InfoLabel>
                         <InfoLabel title="NFe:" subtitle={abastecimento?.NumeroNFe}></InfoLabel>
                         <InfoLabel title="Tanque:" subtitle={abastecimento?.Tanque}></InfoLabel>

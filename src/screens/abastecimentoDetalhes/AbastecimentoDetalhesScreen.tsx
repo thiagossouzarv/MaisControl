@@ -68,7 +68,7 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
         try {
             // Cria o PDF
             setCarregando(true)
-            const { uri } = await Print.printToFileAsync({ html: `<p><b>Data:</b> ${abastecimento?.Data}</p>
+            const { uri } = await Print.printToFileAsync({ html: `<div style="border: groove; padding: 10px;" ><p><b>Data:</b> ${abastecimento?.Data}</p>
             <p><b>Veículo/Equipamento:</b> ${abastecimento?.VeiculoEquipamento != undefined ? abastecimento?.VeiculoEquipamento: ''}</p>
             <p><b>Grupo:</b> ${abastecimento?.GrupoVeiculo != undefined ? abastecimento?.GrupoVeiculo: ''}</p>
             <p><b>N° Frota:</b> ${abastecimento?.NumeroFrota != undefined ? abastecimento?.NumeroFrota: ''}</p>
@@ -92,7 +92,7 @@ const AbastecimentosPage: React.FC<AbastecimentoDetalhesScreenProps> = ({
             <p><b>Cancelado:</b> ${abastecimento?.AbastecimentoCancelado != undefined ? abastecimento?.AbastecimentoCancelado: ''}</p>
             <p><b>Aferição:</b> ${abastecimento?.AbastecimentoAfericao != undefined ? abastecimento?.AbastecimentoAfericao: ''}</p>
             <p><b>Abastecimento Externo:</b> ${abastecimento?.AbastecimentoExterno != undefined ? abastecimento?.AbastecimentoExterno: ''}</p>
-            ` });
+            </div>` });
 
             // Define o nome do arquivo
             const fileName = `abastecimento-${abastecimento?.IdAbastecimento}.pdf`;
